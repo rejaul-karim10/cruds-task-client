@@ -1,13 +1,34 @@
 import React from "react";
+import { toast } from "react-hot-toast";
 
 const Form = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const name = event.target.name.value;
-    const phoneNumber = event.target.phoneNumber.value;
-    const email = event.target.email.value;
-    const hobbies = event.target.hobbies.value;
-    console.log(name, phoneNumber, email, hobbies);
+
+    const data = {
+      name: event.target.name.value,
+      phoneNumber: event.target.phoneNumber.value,
+      email: event.target.email.value,
+      hobbies: event.target.hobbies.value,
+    };
+
+    // post data
+    fetch("http://localhost:5000/hobbies", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success("Successfully created!");
+        } else {
+          toast.error("Something went wrong");
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -35,7 +56,6 @@ const Form = () => {
               placeholder="123-45-678"
               type="tel"
               name="phoneNumber"
-              pattern="[+]{1}[0-9]{11,14}"
               required
               className="input input-bordered w-full max-w-xs"
             />
