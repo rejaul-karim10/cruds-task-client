@@ -4,6 +4,7 @@ import AddModalData from "./Modal/AddModalData";
 
 const TableData = () => {
   const [hobbies, setHobbies] = useState([]);
+  const [refresh, setRefresh]= useState(false)
 
   useEffect(() => {
     fetch("http://localhost:5000/hobbies")
@@ -16,9 +17,24 @@ const TableData = () => {
         }
       })
       .catch((error) => toast.error(error.message));
-  }, []);
+  }, [refresh]);
   console.log(hobbies);
-  
+
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/hobbies/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success(data.message);
+          setRefresh(!refresh)
+        } else {
+          toast.error(data.error);
+        }
+      })
+      .catch((error) => toast.error(error.message));
+  };
   return (
     <div className="h-[800px] max-w-[1200px] mx-auto overflow-x-auto w-full">
       <table className="table table-compact w-full">
@@ -38,7 +54,7 @@ const TableData = () => {
             return (
               <tr>
                 <input type="checkbox" className="checkbox checkbox-sm mt-2" />
-                <th>{i+1}</th>
+                <th>{i + 1}</th>
                 <td>{hobby.name}</td>
                 <td>{hobby.phoneNumber}</td>
                 <td>{hobby.email}</td>
@@ -54,7 +70,10 @@ const TableData = () => {
                     <button className="btn btn-xs btn-secondary mt-2">
                       Update
                     </button>
-                    <button className="btn btn-xs btn-error mt-2">
+                    <button
+                      onClick={() => handleDelete(hobby._id)}
+                      className="btn btn-xs btn-error mt-2"
+                    >
                       Delete
                     </button>
                   </ul>
