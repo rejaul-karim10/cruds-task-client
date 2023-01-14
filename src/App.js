@@ -1,14 +1,13 @@
-import './App.css';
-import Footer from './components/Footer';
-import Form from './components/Form';
-import Navbar from './components/Navbar';
+import { Toaster } from "react-hot-toast";
+import { RouterProvider } from "react-router-dom";
+import router from "./Routes/Routes";
 
 function App() {
   return (
     <div>
-     <Navbar/>
-     <Form/>
-     <Footer/>
+      <RouterProvider router={router}>
+        <Toaster />
+      </RouterProvider>
     </div>
   );
 }

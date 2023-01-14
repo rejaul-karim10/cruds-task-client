@@ -1,17 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-base-100">
+    <div className=" max-w-[1200px] mx-auto navbar bg-base-100">
       <div className="flex-1">
         <a href="/" className="font-bold text-2xl cursor-pointer">
-          CRUD'S TASK
+          <span className="text-primary">CRUD'S</span> TASK
         </a>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a href="/">Table</a>
+            <Link to="/form">Form</Link>
+          </li>
+          <li>
+          <Link to="/table">Table</Link>
           </li>
         </ul>
       </div>

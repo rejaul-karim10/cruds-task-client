@@ -33,7 +33,7 @@ const Form = () => {
             </label>
             <input
               placeholder="Phone Number"
-              type="number"
+              type="text"
               name="phoneNumber"
               required
               className="input input-bordered w-full max-w-xs"
