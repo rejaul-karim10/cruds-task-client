@@ -1,12 +1,34 @@
 import React from "react";
+import { toast } from "react-hot-toast";
 
 const AddModalData = () => {
   const handleSubmit = (event) => {
-    const name = event.target.name.value;
-    const phoneNumber = event.target.phoneNumber.value;
-    const email = event.target.email.value;
-    const hobbies = event.target.hobbies.value;
-    console.log(name, phoneNumber, email, hobbies);
+    event.preventDefault();
+
+    const data = {
+      name: event.target.name.value,
+      phoneNumber: event.target.phoneNumber.value,
+      email: event.target.email.value,
+      hobbies: event.target.hobbies.value,
+    };
+
+    // post data
+    fetch("http://localhost:5000/hobbies", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success("Successfully created!");
+        } else {
+          toast.error("Something went wrong");
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -20,9 +42,10 @@ const AddModalData = () => {
           >
             ✕
           </label>
-          <h3 className="text-lg font-bold">
-            Congratulations random Internet user!
+          <h3 className="text-xl font-bold text-center uppercase">
+            Add Your Entry
           </h3>
+          <p className="text-center">You can add you hobby here</p>
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full">
               <label className="label">
@@ -75,7 +98,7 @@ const AddModalData = () => {
               <input
                 className="btn btn-primary w-full"
                 type="submit"
-                value="Save"
+                value="Save Entry"
               />
             </div>
           </form>

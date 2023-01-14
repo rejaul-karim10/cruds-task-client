@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import AddModalData from "./Modal/AddModalData";
 
 const TableData = () => {
@@ -12,13 +13,13 @@ const TableData = () => {
       .then((data) => {
         if (data.success) {
           setHobbies(data.data);
+          setRefresh(!refresh)
         } else {
           toast.error(data.error);
         }
       })
       .catch((error) => toast.error(error.message));
   }, [refresh]);
-  console.log(hobbies);
 
   const handleDelete = (id) => {
     fetch(`http://localhost:5000/hobbies/${id}`, {
@@ -35,15 +36,20 @@ const TableData = () => {
       })
       .catch((error) => toast.error(error.message));
   };
+
+  const navigate = useNavigate()
+  const handleUpdate =(id)=>{
+   navigate(`/table/update/${id}`)
+  }
   return (
-    <div className="h-[800px] max-w-[1200px] mx-auto overflow-x-auto w-full">
+    <div className="h-[800px] max-w-[1200px] mx-auto overflow-x-auto w-full py-10">
       <table className="table table-compact w-full">
         <thead>
           <tr>
             <th></th>
             <th></th>
             <th>Name</th>
-            <th>Phone Nmber</th>
+            <th>Phone</th>
             <th>Email</th>
             <th>Hobbies</th>
             <th>Action</th>
@@ -67,7 +73,9 @@ const TableData = () => {
                     tabIndex={0}
                     className="dropdown-content menu p-2 shadow bg-base-100 rounded-box"
                   >
-                    <button className="btn btn-xs btn-secondary mt-2">
+                    <button
+                    onClick={() => handleUpdate(hobby._id)}
+                    className="btn btn-xs btn-secondary mt-2">
                       Update
                     </button>
                     <button
@@ -86,11 +94,11 @@ const TableData = () => {
       <AddModalData />
       <div className="flex justify-between mt-10">
         <div>
-          <button className="btn btn-primary">Send</button>
+          <button className="btn btn-sm btn-primary">Send to Email</button>
         </div>
         <div>
-          <label htmlFor="dataModal" className="btn btn-primary">
-            Add
+          <label htmlFor="dataModal" className="btn btn-sm btn-primary">
+            Add New
           </label>
         </div>
       </div>

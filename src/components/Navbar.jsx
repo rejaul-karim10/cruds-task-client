@@ -12,10 +12,10 @@ const Navbar = () => {
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to="/form">Form</Link>
+            <Link to="/form" className="font-semibold mr-2">Add New</Link>
           </li>
           <li>
-          <Link to="/table">Table</Link>
+          <Link to="/table" className="font-semibold">All Entries</Link>
           </li>
         </ul>
       </div>

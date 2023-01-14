@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Form from "../components/Form";
 import TableData from "../components/TableData";
+import UpdateEntry from "../components/UpdateEntry";
 import Main from "../layout/Main";
 
 const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/table",
         element: <TableData />,
+      },
+      {
+        path: "/table/update/:id",
+        element: <UpdateEntry/>,
       },
     ],
   },
