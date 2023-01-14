@@ -32,9 +32,10 @@ const Form = () => {
               <span className="label-text">Phone Number</span>
             </label>
             <input
-              placeholder="Phone Number"
-              type="text"
+              placeholder="123-45-678"
+              type="tel"
               name="phoneNumber"
+              pattern="[+]{1}[0-9]{11,14}"
               required
               className="input input-bordered w-full max-w-xs"
             />
