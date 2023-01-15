@@ -8,9 +8,34 @@ const TableData = () => {
   const [entries, setEntries] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setLoading] = useState(true);
-
   const [selectedRows, setSelectedRows] = useState([]);
-  const [emailEnabled, setEmailEnabled] = useState(false);
+
+  // handling checkbox select
+  const handleSelect = (id) => {
+    if (selectedRows.includes(id)) {
+      setSelectedRows(selectedRows.filter((selectedId) => selectedId !== id));
+    } else {
+      setSelectedRows([...selectedRows, id]);
+    }
+  };
+
+  // sending email by using this endpoint
+  const handleSendEmail = () => {
+    fetch("http://localhost:5000/send-email", {
+      method: "POST",
+      body: JSON.stringify({ selectedRows }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success("Successfully send Email");
+        } else {
+          toast.error(data.error);
+        }
+      })
+      .catch((error) => toast.error(error.message));
+  };
 
   useEffect(() => {
     // loading data from database
@@ -59,33 +84,11 @@ const TableData = () => {
     return <Spinner />;
   }
 
-  const handleSelect = (id) => {
-    setSelectedRows([...selectedRows, id]);
-    setEmailEnabled(true);
-  };
-
-  const handleSendEmail = () => {
-    fetch("http://localhost:5000/send-email", {
-      method: "POST",
-      body: JSON.stringify({ selectedRows }),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          toast.success(data.message);
-        } else {
-          toast.error(data.error);
-        }
-      })
-      .catch((error) => toast.error(error.message));
-  };
-
   return (
     <div className="h-screen max-w-[1200px] mx-auto overflow-x-auto w-full py-10">
       <table className="table-auto w-full">
         <thead>
-          <tr className="bg-gray-800 text-white">
+          <tr className="bg-gray-900 text-white text-center">
             <th></th>
             <th></th>
             <th>Name</th>
@@ -98,17 +101,17 @@ const TableData = () => {
         <tbody>
           {entries.map((entry, i) => {
             return (
-              <tr key={i}>
+              <tr key={i} className="text-center">
                 <input
                   onClick={() => handleSelect(entry._id)}
                   type="checkbox"
                   className="checkbox checkbox-sm mt-4"
                 />
-                <th>{i + 1}</th>
-                <td>{entry.name}</td>
-                <td>{entry.phoneNumber}</td>
-                <td>{entry.email}</td>
-                <td>{entry.hobbies}</td>
+                <th className="border-b">{i + 1}</th>
+                <td className="border-b">{entry.name}</td>
+                <td className="border-b">{entry.phoneNumber}</td>
+                <td className="border-b">{entry.email}</td>
+                <td className="border-b">{entry.hobbies}</td>
                 <td className="dropdown">
                   <label tabIndex={0} className="btn btn-xs btn-gray-900">
                     Action
@@ -132,20 +135,19 @@ const TableData = () => {
                   </ul>
                 </td>
               </tr>
-              
             );
           })}
         </tbody>
       </table>
       <AddModalData />
-      <div className="flex justify-between mt-10">
+      <div className="flex justify-between mt-10 px-10">
         <div>
           <button
+            disabled={selectedRows.length === 0}
             onClick={handleSendEmail}
-            className="btn btn-xs btn-primary mt-2"
-            disabled={!emailEnabled}
+            className="btn btn-sm btn-primary mt-2"
           >
-            Send to Email
+            Send Email
           </button>
         </div>
         <div>
