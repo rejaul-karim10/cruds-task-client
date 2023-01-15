@@ -2,29 +2,35 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import AddModalData from "./Modal/AddModalData";
+import Spinner from "./Spinner/Spinner";
 
 const TableData = () => {
-  const [hobbies, setHobbies] = useState([]);
+  const [entries, setEntries] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/hobbies")
+    // loading data from database
+    fetch("http://localhost:5000/entries")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setHobbies(data.data);
+          setLoading(false);
+          setEntries(data.data);
           setRefresh(!refresh);
         } else {
           toast.error(data.error);
         }
       })
-      .catch((error) => toast.error(error.message));
+      .catch((error) => {
+        setLoading(false);
+        toast.error(error.message);
+      });
   }, [refresh]);
 
-  // delete specific entry
+  // delete specific entry using this end point
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/hobbies/${id}`, {
+    fetch(`http://localhost:5000/entries/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -44,7 +50,10 @@ const TableData = () => {
     navigate(`/table/update/${id}`);
   };
 
-  
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="h-screen max-w-[1200px] mx-auto overflow-x-auto w-full py-10">
       <table className="table table-compact w-full">
@@ -60,16 +69,21 @@ const TableData = () => {
           </tr>
         </thead>
         <tbody>
-          {hobbies.map((hobby, i) => {
+          {entries.map((entry, i) => {
             return (
-              <tr>
-                <input type="checkbox" className="checkbox checkbox-sm mt-2" />
+              <tr key={i}>
+                <label>
+                  <input
+                    type="checkbox"
+                    className="checkbox checkbox-sm mt-4"
+                  />
+                </label>
                 <th>{i + 1}</th>
-                <td>{hobby.name}</td>
-                <td>{hobby.phoneNumber}</td>
-                <td>{hobby.email}</td>
-                <td>{hobby.hobbies}</td>
-                <div className="dropdown">
+                <td>{entry.name}</td>
+                <td>{entry.phoneNumber}</td>
+                <td>{entry.email}</td>
+                <td>{entry.hobbies}</td>
+                <td className="dropdown">
                   <label tabIndex={0} className="btn btn-xs btn-gray-900">
                     Action
                   </label>
@@ -78,19 +92,19 @@ const TableData = () => {
                     className="dropdown-content menu p-2 shadow bg-base-100 rounded-box"
                   >
                     <button
-                      onClick={() => handleUpdate(hobby._id)}
+                      onClick={() => handleUpdate(entry._id)}
                       className="btn btn-xs btn-secondary mt-2"
                     >
                       Update
                     </button>
                     <button
-                      onClick={() => handleDelete(hobby._id)}
+                      onClick={() => handleDelete(entry._id)}
                       className="btn btn-xs btn-error mt-2"
                     >
                       Delete
                     </button>
                   </ul>
-                </div>
+                </td>
               </tr>
             );
           })}

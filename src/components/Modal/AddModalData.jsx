@@ -5,27 +5,27 @@ const AddModalData = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const data = {
+    const entries = {
       name: event.target.name.value,
       phoneNumber: event.target.phoneNumber.value,
       email: event.target.email.value,
       hobbies: event.target.hobbies.value,
     };
 
-    // post data
-    fetch("http://localhost:5000/hobbies", {
+    // post data to database
+    fetch("http://localhost:5000/entries", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(entries),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          toast.success("Successfully created!");
+          toast.success(data.message);
         } else {
-          toast.error("Something went wrong");
+          toast.error(data.message);
         }
       })
       .catch((error) => console.log(error));
@@ -45,7 +45,9 @@ const AddModalData = () => {
           <h3 className="text-xl font-bold text-center uppercase">
             Add New Entry
           </h3>
-          <p className="text-center">You can add your entry by filling out the form</p>
+          <p className="text-center">
+            You can add your entry by filling out the form
+          </p>
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full">
               <label className="label">
