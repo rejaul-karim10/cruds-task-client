@@ -9,6 +9,9 @@ const TableData = () => {
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [emailEnabled, setEmailEnabled] = useState(false);
+
   useEffect(() => {
     // loading data from database
     fetch("http://localhost:5000/entries")
@@ -28,7 +31,7 @@ const TableData = () => {
       });
   }, [refresh]);
 
-  // delete specific entry using this end point
+  // delete specific entry using this endpoint
   const handleDelete = (id) => {
     fetch(`http://localhost:5000/entries/${id}`, {
       method: "DELETE",
@@ -46,6 +49,8 @@ const TableData = () => {
   };
 
   const navigate = useNavigate();
+
+  // update specific entry using this endpoint
   const handleUpdate = (id) => {
     navigate(`/table/update/${id}`);
   };
@@ -54,11 +59,33 @@ const TableData = () => {
     return <Spinner />;
   }
 
+  const handleSelect = (id) => {
+    setSelectedRows([...selectedRows, id]);
+    setEmailEnabled(true);
+  };
+
+  const handleSendEmail = () => {
+    fetch("http://localhost:5000/send-email", {
+      method: "POST",
+      body: JSON.stringify({ selectedRows }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success(data.message);
+        } else {
+          toast.error(data.error);
+        }
+      })
+      .catch((error) => toast.error(error.message));
+  };
+
   return (
     <div className="h-screen max-w-[1200px] mx-auto overflow-x-auto w-full py-10">
-      <table className="table table-compact w-full">
+      <table className="table-auto w-full">
         <thead>
-          <tr>
+          <tr className="bg-gray-800 text-white">
             <th></th>
             <th></th>
             <th>Name</th>
@@ -72,12 +99,11 @@ const TableData = () => {
           {entries.map((entry, i) => {
             return (
               <tr key={i}>
-                <label>
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-sm mt-4"
-                  />
-                </label>
+                <input
+                  onClick={() => handleSelect(entry._id)}
+                  type="checkbox"
+                  className="checkbox checkbox-sm mt-4"
+                />
                 <th>{i + 1}</th>
                 <td>{entry.name}</td>
                 <td>{entry.phoneNumber}</td>
@@ -106,6 +132,7 @@ const TableData = () => {
                   </ul>
                 </td>
               </tr>
+              
             );
           })}
         </tbody>
@@ -113,7 +140,13 @@ const TableData = () => {
       <AddModalData />
       <div className="flex justify-between mt-10">
         <div>
-          <button className="btn btn-sm btn-primary">Send to Email</button>
+          <button
+            onClick={handleSendEmail}
+            className="btn btn-xs btn-primary mt-2"
+            disabled={!emailEnabled}
+          >
+            Send to Email
+          </button>
         </div>
         <div>
           <label htmlFor="dataModal" className="btn btn-sm btn-primary">
