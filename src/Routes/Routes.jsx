@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Form from "../components/Form";
+import Home from "../components/Home";
 import TableData from "../components/TableData";
 import UpdateEntry from "../components/UpdateEntry";
 import Main from "../layout/Main";
@@ -11,10 +12,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Form />,
+        element: <Home/>,
       },
       {
-        path: "/form",
+        path: "/entries",
         element: <Form />,
       },
       {
