@@ -5,7 +5,8 @@ import AddModalData from "./Modal/AddModalData";
 
 const TableData = () => {
   const [hobbies, setHobbies] = useState([]);
-  const [refresh, setRefresh]= useState(false)
+  const [refresh, setRefresh] = useState(false);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/hobbies")
@@ -13,7 +14,7 @@ const TableData = () => {
       .then((data) => {
         if (data.success) {
           setHobbies(data.data);
-          setRefresh(!refresh)
+          setRefresh(!refresh);
         } else {
           toast.error(data.error);
         }
@@ -21,6 +22,7 @@ const TableData = () => {
       .catch((error) => toast.error(error.message));
   }, [refresh]);
 
+  // delete specific entry
   const handleDelete = (id) => {
     fetch(`http://localhost:5000/hobbies/${id}`, {
       method: "DELETE",
@@ -29,7 +31,7 @@ const TableData = () => {
       .then((data) => {
         if (data.success) {
           toast.success(data.message);
-          setRefresh(!refresh)
+          setRefresh(!refresh);
         } else {
           toast.error(data.error);
         }
@@ -37,12 +39,14 @@ const TableData = () => {
       .catch((error) => toast.error(error.message));
   };
 
-  const navigate = useNavigate()
-  const handleUpdate =(id)=>{
-   navigate(`/table/update/${id}`)
-  }
+  const navigate = useNavigate();
+  const handleUpdate = (id) => {
+    navigate(`/table/update/${id}`);
+  };
+
+  
   return (
-    <div className="h-[800px] max-w-[1200px] mx-auto overflow-x-auto w-full py-10">
+    <div className="h-screen max-w-[1200px] mx-auto overflow-x-auto w-full py-10">
       <table className="table table-compact w-full">
         <thead>
           <tr>
@@ -74,8 +78,9 @@ const TableData = () => {
                     className="dropdown-content menu p-2 shadow bg-base-100 rounded-box"
                   >
                     <button
-                    onClick={() => handleUpdate(hobby._id)}
-                    className="btn btn-xs btn-secondary mt-2">
+                      onClick={() => handleUpdate(hobby._id)}
+                      className="btn btn-xs btn-secondary mt-2"
+                    >
                       Update
                     </button>
                     <button

@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <div className="max-w-[1200px] mx-auto navbar bg-base-100">
       <div className="flex-1">
-        <Link to="/entries" className="font-bold text-2xl text-primary mr-2">
+        <Link to="/" className="font-bold text-2xl text-primary mr-2">
           CRUD<span className="text-secondary">S</span>
         </Link>
       </div>

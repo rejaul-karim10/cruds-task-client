@@ -34,7 +34,9 @@ const Form = () => {
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="w-96 p-7">
-        <h2 className="text-xl text-center font-bold uppercase">Enter Your Entry</h2>
+        <h2 className="text-xl text-center font-bold uppercase">
+          Add Your Entry
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="form-control w-full max-w-xs">
             <label className="label">

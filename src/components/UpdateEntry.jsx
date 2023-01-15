@@ -21,7 +21,7 @@ const UpdateEntry = () => {
       })
       .catch((error) => toast.error(error.message));
   }, [refresh, id]);
-  console.log(hobbies);
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,9 +51,9 @@ const UpdateEntry = () => {
     .catch(error=>toast.error(error.message))
   };
   return (
-    <div className="h-[800px] flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center">
       <div className="w-96 p-7">
-        <h2 className="text-xl text-center font-bold">Fill Out The Form</h2>
+        <h2 className="text-xl text-center font-bold uppercase">Update Entry</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-control w-full max-w-xs">
             <label className="label">

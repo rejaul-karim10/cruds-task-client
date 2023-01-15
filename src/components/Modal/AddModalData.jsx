@@ -43,9 +43,9 @@ const AddModalData = () => {
             ✕
           </label>
           <h3 className="text-xl font-bold text-center uppercase">
-            Add Your Entry
+            Add New Entry
           </h3>
-          <p className="text-center">You can add you hobby here</p>
+          <p className="text-center">You can add your entry by filling out the form</p>
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full">
               <label className="label">
@@ -61,7 +61,7 @@ const AddModalData = () => {
             </div>
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text">Phone Number</span>
+                <span className="label-text">Phone</span>
               </label>
               <input
                 placeholder="123-45-678"
