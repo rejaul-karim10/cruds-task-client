@@ -13,7 +13,7 @@ const Home = () => {
             CRUD'S
           </p>
           <h1 className="md:text-4xl sm:text-3xl text-2xl font-bold text-primary py-2">
-            Create Read Update <br /> Delete And Send
+            Create Read Update <br /> Delete And <span className='text-secondary'>Send</span>
           </h1>
           <p className="md:text-mg text-sm">
             In this application i have implemented MongoDb CRUD operation.
