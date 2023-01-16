@@ -10,7 +10,7 @@ const UpdateEntry = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch(`http://localhost:5000/entries/${id}`)
+    fetch(`https://cruds-task-server.vercel.app/entries/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -32,7 +32,7 @@ const UpdateEntry = () => {
       hobbies: e.target.hobbies.value,
     };
 
-    fetch(`http://localhost:5000/entries/${id}`,{
+    fetch(`https://cruds-task-server.vercel.app/entries/${id}`,{
         method: "PATCH",
         headers:{
             "content-type": "application/json"

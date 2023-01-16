@@ -12,7 +12,7 @@ const AddModalData = () => {
     };
 
     // post data to database
-    fetch("http://localhost:5000/entries", {
+    fetch("https://cruds-task-server.vercel.app/entries", {
       method: "POST",
       headers: {
         "content-type": "application/json",

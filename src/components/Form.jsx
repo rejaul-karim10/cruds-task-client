@@ -17,7 +17,7 @@ const Form = () => {
     };
 
     // post data to database by using this endpoint
-    fetch("http://localhost:5000/entries", {
+    fetch("https://cruds-task-server.vercel.app/entries", {
       method: "POST",
       headers: {
         "content-type": "application/json",
