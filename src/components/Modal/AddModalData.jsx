@@ -4,7 +4,6 @@ import { toast } from "react-hot-toast";
 const AddModalData = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const entries = {
       name: event.target.name.value,
       phoneNumber: event.target.phoneNumber.value,
@@ -24,6 +23,8 @@ const AddModalData = () => {
       .then((data) => {
         if (data.success) {
           toast.success(data.message);
+
+          event.target.reset();
         } else {
           toast.error(data.message);
         }

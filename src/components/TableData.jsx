@@ -8,7 +8,11 @@ const TableData = () => {
   const [entries, setEntries] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  
   const [selectedRows, setSelectedRows] = useState([]);
+  console.log(selectedRows)
+  
+// console.log(selectedRows);
 
   // handling checkbox select
   const handleSelect = (id) => {
@@ -28,10 +32,10 @@ const TableData = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) {
-          toast.success("Successfully send Email");
+        if (data.error) {
+          toast.error("Something Went Wrong");
         } else {
-          toast.error(data.error);
+          toast.success(data.message);
         }
       })
       .catch((error) => toast.error(error.message));
@@ -54,7 +58,7 @@ const TableData = () => {
         setLoading(false);
         toast.error(error.message);
       });
-  }, [refresh]);
+  }, [refresh ]);
 
   // delete specific entry using this endpoint
   const handleDelete = (id) => {
@@ -88,7 +92,7 @@ const TableData = () => {
     <div className="h-screen max-w-[1200px] mx-auto overflow-x-auto w-full py-10">
       <table className="table-auto w-full">
         <thead>
-          <tr className="bg-gray-900 text-white text-center">
+          <tr className="bg-gray-800 text-white text-center">
             <th></th>
             <th></th>
             <th>Name</th>
